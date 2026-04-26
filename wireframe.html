@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe – Dashboard Clima &amp; Notícias</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f0f0f0;
+            color: #222;
+        }
+
+        /* ── PAGE ── */
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            margin: 20px auto;
+            padding: 15mm 18mm;
+            box-shadow: 0 2px 10px rgba(0,0,0,.18);
+            position: relative;
+        }
+
+        @media print {
+            body { background: white; }
+            .page { margin: 0; box-shadow: none; page-break-after: always; }
+        }
+
+        /* ── WIREFRAME PRIMITIVES ── */
+        .wf-block { background: #e0e0e0; border: 1.5px solid #999; }
+
+        .wf-image {
+            background: #d0d0d0;
+            border: 1.5px solid #999;
+            position: relative;
+            overflow: hidden;
+        }
+        .wf-image::before, .wf-image::after {
+            content: '';
+            position: absolute;
+            background: #bbb;
+            width: 140%; height: 1.5px;
+            top: 50%; left: -20%;
+            transform-origin: center;
+        }
+        .wf-image::before { transform: rotate(38deg); }
+        .wf-image::after  { transform: rotate(-38deg); }
+
+        .wf-btn {
+            background: #bdbdbd;
+            border: 1.5px solid #777;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 700; color: #444;
+            padding: 5px 13px; border-radius: 3px; cursor: default;
+        }
+
+        .wf-input {
+            background: #fafafa; border: 1.5px solid #aaa;
+            height: 30px; padding: 0 8px;
+            display: flex; align-items: center;
+            font-size: 10px; color: #bbb;
+        }
+
+        .wf-text-line { background: #ccc; border-radius: 2px; margin: 4px 0; }
+        .wf-text-line.full   { width: 100%; height: 8px; }
+        .wf-text-line.medium { width: 78%;  height: 8px; }
+        .wf-text-line.short  { width: 50%;  height: 8px; }
+
+        /* ── SECTION HEADER ── */
+        .section-header {
+            border-left: 4px solid #888;
+            padding-left: 12px;
+            margin-bottom: 18px;
+        }
+        .section-header h2 { font-size: 15px; font-weight: 800; color: #333; }
+        .section-header p  { font-size: 11px; color: #888; margin-top: 3px; }
+
+        /* ── COVER ── */
+        .cover {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            min-height: 265mm; text-align: center;
+        }
+        .cover-badge {
+            background: #e8e8e8; border: 2px solid #aaa;
+            padding: 5px 18px; font-size: 11px; font-weight: 700;
+            color: #666; border-radius: 20px; margin-bottom: 22px;
+        }
+        .cover h1 { font-size: 30px; font-weight: 900; color: #1a1a1a; line-height: 1.15; margin-bottom: 8px; }
+        .cover h2 { font-size: 15px; font-weight: 400; color: #777; margin-bottom: 36px; }
+        .cover-divider { width: 56px; height: 3px; background: #aaa; margin: 0 auto 36px; }
+        .cover-meta {
+            background: #f7f7f7; border: 1px solid #ddd; border-radius: 6px;
+            padding: 18px 30px; text-align: left; width: 100%; max-width: 370px;
+        }
+        .cover-meta-row { display: flex; justify-content: space-between; margin-bottom: 9px; font-size: 12px; }
+        .cover-meta-row:last-child { margin-bottom: 0; }
+        .meta-key { color: #999; font-weight: 700; }
+        .meta-val { color: #333; }
+        .cover-techs { margin-top: 36px; display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; }
+        .tech-tag {
+            background: #ebebeb; border: 1px solid #ccc;
+            padding: 4px 13px; font-size: 11px; border-radius: 14px;
+            color: #555; font-weight: 600;
+        }
+
+        /* ── DESKTOP WIREFRAME ── */
+        .desktop-frame { border: 2px solid #555; border-radius: 4px; overflow: hidden; }
+
+        .wf-navbar {
+            background: #d8d8d8; border-bottom: 2px solid #555;
+            display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+        }
+        .wf-logo {
+            width: 30px; height: 30px; background: #b0b0b0;
+            border: 1.5px solid #777; border-radius: 5px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; flex-shrink: 0;
+        }
+        .wf-nav-title { font-size: 12px; font-weight: 700; color: #444; flex: 1; }
+
+        .wf-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        .wf-cell {
+            padding: 11px 12px;
+            border-right: 2px solid #555;
+            border-bottom: 2px solid #555;
+        }
+        .wf-grid > .wf-cell:nth-child(2n)   { border-right: none; }
+        .wf-grid > .wf-cell:nth-child(n+3)  { border-bottom: none; }
+
+        .wf-cell-title {
+            font-size: 10px; font-weight: 800; color: #555; letter-spacing: .5px;
+            text-transform: uppercase; margin-bottom: 8px;
+            padding-bottom: 5px; border-bottom: 1px dashed #ccc;
+        }
+
+        /* Weather */
+        .wf-weather-row { display: flex; gap: 10px; align-items: center; margin: 8px 0; }
+        .wf-temp { font-size: 22px; font-weight: 900; color: #555; }
+        .wf-weather-sub { font-size: 10px; color: #777; margin-top: 2px; }
+        .wf-chip-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+        .wf-chip {
+            background: #d4d4d4; border: 1px solid #aaa;
+            padding: 2px 8px; font-size: 9px; border-radius: 10px; color: #555;
+        }
+
+        /* Forecast */
+        .wf-forecast-row { display: flex; gap: 6px; margin-top: 8px; }
+        .wf-forecast-day {
+            flex: 1; background: #dadada; border: 1px solid #aaa;
+            border-radius: 4px; padding: 6px 4px; text-align: center; font-size: 9px; color: #555;
+        }
+        .wf-forecast-day strong { display: block; margin-top: 3px; }
+
+        /* Chart */
+        .wf-chart {
+            height: 88px; background: #eee; border: 1.5px solid #ccc;
+            margin-top: 8px; position: relative;
+        }
+        .wf-chart svg { width: 100%; height: 100%; }
+
+        /* News */
+        .wf-news-card {
+            display: flex; gap: 8px;
+            border: 1.5px solid #ccc; border-radius: 3px;
+            padding: 7px; margin: 6px 0; background: #f2f2f2;
+        }
+        .wf-news-thumb { width: 46px; height: 46px; flex-shrink: 0; }
+        .wf-news-body { flex: 1; }
+
+        .wf-footer-bar {
+            background: #d8d8d8; border-top: 2px solid #555;
+            padding: 7px 12px; text-align: center;
+            font-size: 10px; color: #666; font-weight: 700;
+        }
+
+        /* Legend */
+        .wf-legend { display: flex; gap: 18px; font-size: 10px; color: #777; margin-top: 12px; flex-wrap: wrap; }
+        .wf-legend-item { display: flex; align-items: center; gap: 5px; }
+        .legend-box { width: 14px; height: 11px; border: 1px solid #999; display: inline-block; }
+
+        /* ── MOBILE WIREFRAME ── */
+        .mobile-layout { display: flex; gap: 30px; align-items: flex-start; }
+        .mobile-frame {
+            width: 176px; flex-shrink: 0;
+            border: 3px solid #555; border-radius: 18px; overflow: hidden;
+        }
+        .mobile-notch { background: #555; height: 12px; width: 56px; border-radius: 0 0 8px 8px; margin: 0 auto; }
+        .mobile-screen { background: white; }
+
+        .wf-mobile-nav {
+            background: #d8d8d8; border-bottom: 1.5px solid #555;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 6px 8px;
+        }
+        .wf-hamburger { display: flex; flex-direction: column; gap: 3px; }
+        .wf-hamburger span { display: block; width: 14px; height: 2px; background: #555; }
+
+        .mobile-content { padding: 8px; }
+        .mobile-section-title { font-size: 7px; font-weight: 800; color: #555; text-transform: uppercase; margin-bottom: 4px; }
+
+        .wf-search-row { display: flex; gap: 4px; margin-bottom: 8px; }
+        .wf-weather-card-mob {
+            background: #e2e2e2; border: 1.5px solid #aaa; border-radius: 4px;
+            padding: 8px; margin-bottom: 8px; display: flex; gap: 8px; align-items: center;
+        }
+        .wf-forecast-scroll { display: flex; gap: 3px; overflow: hidden; margin-bottom: 8px; }
+        .wf-forecast-sm {
+            flex-shrink: 0; width: 26px; background: #dadada;
+            border: 1px solid #aaa; border-radius: 3px; padding: 3px 2px;
+            text-align: center; font-size: 6px; color: #555;
+        }
+        .wf-chart-sm { height: 48px; background: #eee; border: 1.5px solid #ccc; margin-bottom: 8px; position: relative; }
+        .wf-news-sm {
+            border: 1px solid #ccc; border-radius: 3px;
+            padding: 5px; margin-bottom: 5px; background: #f2f2f2;
+        }
+
+        .mobile-footer { background: #d8d8d8; border-top: 1.5px solid #555; padding: 5px; text-align: center; font-size: 7px; color: #666; font-weight: 700; }
+
+        .breakpoint-box {
+            background: #f7f7f7; border: 1px solid #ddd; border-radius: 4px;
+            padding: 11px 13px; font-size: 11px; color: #555; margin-top: 18px;
+            line-height: 1.9;
+        }
+        .breakpoint-box code { font-size: 10px; background: #eee; padding: 1px 5px; border-radius: 3px; }
+
+        .resp-note { margin-bottom: 13px; }
+        .resp-note-title { font-size: 11px; font-weight: 700; color: #444; margin-bottom: 3px; }
+        .resp-note-text { font-size: 11px; color: #666; line-height: 1.55; }
+        .resp-note-text code { font-size: 10px; background: #eee; padding: 1px 4px; border-radius: 3px; }
+
+        /* ── SETUP PAGE ── */
+        .folder-tree {
+            font-family: 'Courier New', monospace; font-size: 12px; line-height: 2;
+            background: #f7f7f7; border: 1.5px solid #ddd; border-radius: 4px;
+            padding: 14px 18px; color: #333;
+        }
+        .folder-tree .folder { color: #444; font-weight: 700; }
+        .folder-tree .comment { color: #aaa; font-size: 10.5px; }
+
+        .api-table { width: 100%; border-collapse: collapse; font-size: 11px; margin: 10px 0; }
+        .api-table th { background: #e2e2e2; border: 1.5px solid #ccc; padding: 7px 10px; font-weight: 700; color: #444; text-align: left; }
+        .api-table td { border: 1.5px solid #ddd; padding: 6px 10px; color: #444; }
+        .api-table tr:nth-child(even) td { background: #fafafa; }
+
+        .code-block {
+            font-family: 'Courier New', monospace; font-size: 11px;
+            background: #1e1e1e; color: #d4d4d4; border-radius: 4px;
+            padding: 13px 15px; line-height: 1.8; margin: 10px 0;
+        }
+        .code-block .c { color: #6a9955; }
+        .code-block .k { color: #9cdcfe; }
+
+        .criteria-list { font-size: 11px; line-height: 2.1; margin-top: 10px; }
+        .criteria-list div::before { content: '✔ '; color: #777; font-weight: 700; }
+
+        h3.sub { font-size: 13px; font-weight: 800; color: #333; margin: 18px 0 8px; padding-bottom: 4px; border-bottom: 1px solid #eee; }
+
+        .setup-note {
+            background: #f5f5f5; border-left: 4px solid #aaa;
+            padding: 9px 13px; font-size: 11px; color: #555;
+            margin: 10px 0; border-radius: 0 4px 4px 0;
+        }
+        .setup-note code { font-size: 10px; background: #eee; padding: 1px 4px; border-radius: 3px; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════ PÁGINA 1 — CAPA ═══════════════════ -->
+<div class="page">
+    <div class="cover">
+        <div class="cover-badge">Projeto 05 · Duas APIs + Gráficos</div>
+        <h1>Dashboard<br>Clima &amp; Notícias</h1>
+        <h2>Wireframe &amp; Setup Inicial</h2>
+        <div class="cover-divider"></div>
+
+        <div class="cover-meta">
+            <div class="cover-meta-row">
+                <span class="meta-key">Disciplina</span>
+                <span class="meta-val">Lab. de Desenvolvimento Web</span>
+            </div>
+            <div class="cover-meta-row">
+                <span class="meta-key">Professor</span>
+                <span class="meta-val">Leandro Felipe Carvalho</span>
+            </div>
+            <div class="cover-meta-row">
+                <span class="meta-key">Aluno</span>
+                <span class="meta-val">Gian Coelho</span>
+            </div>
+            <div class="cover-meta-row">
+                <span class="meta-key">Data</span>
+                <span class="meta-val">Abril / 2026</span>
+            </div>
+            <div class="cover-meta-row">
+                <span class="meta-key">Instituição</span>
+                <span class="meta-val">FATEC Itatiba</span>
+            </div>
+        </div>
+
+        <div class="cover-techs">
+            <span class="tech-tag">HTML5</span>
+            <span class="tech-tag">CSS3</span>
+            <span class="tech-tag">JavaScript ES6+</span>
+            <span class="tech-tag">OpenWeatherMap API</span>
+            <span class="tech-tag">NewsAPI.org</span>
+            <span class="tech-tag">Chart.js</span>
+            <span class="tech-tag">LocalStorage</span>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════ PÁGINA 2 — WIREFRAME DESKTOP ═══════════════════ -->
+<div class="page">
+    <div class="section-header">
+        <h2>Wireframe — Desktop</h2>
+        <p>Resolução de referência: 1280 × 800 px</p>
+    </div>
+
+    <div class="desktop-frame">
+
+        <!-- NAVBAR -->
+        <div class="wf-navbar">
+            <div class="wf-logo">☀</div>
+            <span class="wf-nav-title">Dashboard Clima &amp; Notícias</span>
+            <div style="display:flex; gap:6px; align-items:center;">
+                <div class="wf-input" style="width:148px;">🔍  Buscar cidade...</div>
+                <div class="wf-btn">Buscar</div>
+            </div>
+        </div>
+
+        <!-- GRID 2×2 -->
+        <div class="wf-grid">
+
+            <!-- CÉLULA 1: Clima Atual -->
+            <div class="wf-cell">
+                <div class="wf-cell-title">Clima Atual</div>
+                <div class="wf-weather-row">
+                    <div class="wf-image" style="width:52px; height:52px; flex-shrink:0;"></div>
+                    <div>
+                        <div class="wf-temp">25°C</div>
+                        <div class="wf-weather-sub">Ensolarado · São Paulo, SP</div>
+                    </div>
+                </div>
+                <div class="wf-chip-row">
+                    <div class="wf-chip">💧 Hum: 60%</div>
+                    <div class="wf-chip">💨 Vento: 15 km/h</div>
+                    <div class="wf-chip">🌡 Sens: 27°C</div>
+                </div>
+            </div>
+
+            <!-- CÉLULA 2: Previsão 5 Dias -->
+            <div class="wf-cell">
+                <div class="wf-cell-title">Previsão 5 Dias</div>
+                <div class="wf-forecast-row">
+                    <div class="wf-forecast-day">
+                        <div class="wf-image" style="height:26px; margin-bottom:4px;"></div>
+                        Seg<strong>23°</strong>
+                    </div>
+                    <div class="wf-forecast-day">
+                        <div class="wf-image" style="height:26px; margin-bottom:4px;"></div>
+                        Ter<strong>26°</strong>
+                    </div>
+                    <div class="wf-forecast-day">
+                        <div class="wf-image" style="height:26px; margin-bottom:4px;"></div>
+                        Qua<strong>24°</strong>
+                    </div>
+                    <div class="wf-forecast-day">
+                        <div class="wf-image" style="height:26px; margin-bottom:4px;"></div>
+                        Qui<strong>28°</strong>
+                    </div>
+                    <div class="wf-forecast-day">
+                        <div class="wf-image" style="height:26px; margin-bottom:4px;"></div>
+                        Sex<strong>22°</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CÉLULA 3: Gráfico de Temperatura -->
+            <div class="wf-cell">
+                <div class="wf-cell-title">Gráfico de Temperatura — Chart.js (Linha)</div>
+                <div class="wf-chart">
+                    <svg viewBox="0 0 220 88" preserveAspectRatio="none">
+                        <line x1="22" y1="6" x2="22" y2="76" stroke="#bbb" stroke-width="1"/>
+                        <line x1="22" y1="76" x2="218" y2="76" stroke="#bbb" stroke-width="1"/>
+                        <line x1="22" y1="28" x2="218" y2="28" stroke="#e0e0e0" stroke-width="1" stroke-dasharray="3,3"/>
+                        <line x1="22" y1="52" x2="218" y2="52" stroke="#e0e0e0" stroke-width="1" stroke-dasharray="3,3"/>
+                        <polyline points="22,58 61,44 100,54 139,32 178,48 218,36" fill="none" stroke="#888" stroke-width="2"/>
+                        <circle cx="22"  cy="58" r="3" fill="#777"/>
+                        <circle cx="61"  cy="44" r="3" fill="#777"/>
+                        <circle cx="100" cy="54" r="3" fill="#777"/>
+                        <circle cx="139" cy="32" r="3" fill="#777"/>
+                        <circle cx="178" cy="48" r="3" fill="#777"/>
+                        <circle cx="218" cy="36" r="3" fill="#777"/>
+                        <text x="22"  y="85" font-size="7" fill="#999" text-anchor="middle">Seg</text>
+                        <text x="61"  y="85" font-size="7" fill="#999" text-anchor="middle">Ter</text>
+                        <text x="100" y="85" font-size="7" fill="#999" text-anchor="middle">Qua</text>
+                        <text x="139" y="85" font-size="7" fill="#999" text-anchor="middle">Qui</text>
+                        <text x="178" y="85" font-size="7" fill="#999" text-anchor="middle">Sex</text>
+                        <text x="218" y="85" font-size="7" fill="#999" text-anchor="middle">Sáb</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- CÉLULA 4: Últimas Notícias -->
+            <div class="wf-cell">
+                <div class="wf-cell-title">Últimas Notícias</div>
+
+                <div class="wf-news-card">
+                    <div class="wf-image wf-news-thumb"></div>
+                    <div class="wf-news-body">
+                        <div class="wf-text-line full"></div>
+                        <div class="wf-text-line medium"></div>
+                        <div class="wf-text-line short"></div>
+                        <div style="margin-top:5px;"><span class="wf-btn" style="padding:3px 8px; font-size:9px;">Ler mais →</span></div>
+                    </div>
+                </div>
+
+                <div class="wf-news-card">
+                    <div class="wf-image wf-news-thumb"></div>
+                    <div class="wf-news-body">
+                        <div class="wf-text-line full"></div>
+                        <div class="wf-text-line medium"></div>
+                        <div class="wf-text-line short"></div>
+                        <div style="margin-top:5px;"><span class="wf-btn" style="padding:3px 8px; font-size:9px;">Ler mais →</span></div>
+                    </div>
+                </div>
+
+                <div class="wf-news-card">
+                    <div class="wf-image wf-news-thumb"></div>
+                    <div class="wf-news-body">
+                        <div class="wf-text-line full"></div>
+                        <div class="wf-text-line medium"></div>
+                        <div class="wf-text-line short"></div>
+                        <div style="margin-top:5px;"><span class="wf-btn" style="padding:3px 8px; font-size:9px;">Ler mais →</span></div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /wf-grid -->
+
+        <!-- FOOTER -->
+        <div class="wf-footer-bar">FOOTER — © 2026 Dashboard Clima &amp; Notícias</div>
+    </div>
+
+    <!-- Legend -->
+    <div class="wf-legend">
+        <div class="wf-legend-item"><span class="legend-box" style="background:#e0e0e0;"></span>Container / Bloco</div>
+        <div class="wf-legend-item"><span class="legend-box" style="background:#d0d0d0;"></span>Imagem / Ícone</div>
+        <div class="wf-legend-item"><span class="legend-box" style="background:#ccc; border:none; height:8px;"></span>Texto (placeholder)</div>
+        <div class="wf-legend-item"><span class="legend-box" style="background:#bdbdbd; border-color:#777;"></span>Botão / Ação</div>
+        <div class="wf-legend-item"><span class="legend-box" style="background:#eee;"></span>Área de Gráfico</div>
+    </div>
+</div>
+
+<!-- ═══════════════════ PÁGINA 3 — WIREFRAME MOBILE ═══════════════════ -->
+<div class="page">
+    <div class="section-header">
+        <h2>Wireframe — Mobile</h2>
+        <p>Resolução de referência: 375 × 812 px · Layout em coluna única (mobile-first)</p>
+    </div>
+
+    <div class="mobile-layout">
+
+        <!-- Phone mockup -->
+        <div>
+            <p style="text-align:center; font-size:10px; color:#888; font-weight:700; margin-bottom:8px; text-transform:uppercase; letter-spacing:.5px;">Dashboard Principal</p>
+            <div class="mobile-frame">
+                <div class="mobile-notch"></div>
+                <div class="mobile-screen">
+
+                    <!-- Navbar mobile -->
+                    <div class="wf-mobile-nav">
+                        <div class="wf-logo" style="width:20px;height:20px;font-size:10px;border-radius:4px;">☀</div>
+                        <span style="font-size:9px;font-weight:700;color:#444;">Clima &amp; Notícias</span>
+                        <div class="wf-hamburger"><span></span><span></span><span></span></div>
+                    </div>
+
+                    <div class="mobile-content">
+
+                        <!-- Search -->
+                        <div class="wf-search-row">
+                            <div class="wf-input" style="flex:1; height:24px; font-size:8px; color:#ccc;">🔍 Cidade...</div>
+                            <div class="wf-btn" style="font-size:8px; padding:4px 8px;">OK</div>
+                        </div>
+
+                        <!-- Clima Atual -->
+                        <div class="mobile-section-title">Clima Atual</div>
+                        <div class="wf-weather-card-mob">
+                            <div class="wf-image" style="width:38px;height:38px;flex-shrink:0;"></div>
+                            <div>
+                                <div style="font-size:17px;font-weight:900;color:#555;">25°C</div>
+                                <div style="font-size:8px;color:#777;">Ensolarado · São Paulo</div>
+                                <div style="font-size:7px;color:#999;margin-top:2px;">💧60%  💨15km/h</div>
+                            </div>
+                        </div>
+
+                        <!-- Previsão 5 dias -->
+                        <div class="mobile-section-title">Previsão 5 Dias  ›</div>
+                        <div class="wf-forecast-scroll">
+                            <div class="wf-forecast-sm"><div class="wf-image" style="height:16px;margin-bottom:2px;"></div>Seg<br>23°</div>
+                            <div class="wf-forecast-sm"><div class="wf-image" style="height:16px;margin-bottom:2px;"></div>Ter<br>26°</div>
+                            <div class="wf-forecast-sm"><div class="wf-image" style="height:16px;margin-bottom:2px;"></div>Qua<br>24°</div>
+                            <div class="wf-forecast-sm"><div class="wf-image" style="height:16px;margin-bottom:2px;"></div>Qui<br>28°</div>
+                            <div class="wf-forecast-sm"><div class="wf-image" style="height:16px;margin-bottom:2px;"></div>Sex<br>22°</div>
+                        </div>
+
+                        <!-- Gráfico -->
+                        <div class="mobile-section-title">Temperatura — Chart.js</div>
+                        <div class="wf-chart-sm">
+                            <svg viewBox="0 0 155 48" preserveAspectRatio="none" style="width:100%;height:100%;">
+                                <polyline points="5,35 33,24 61,30 89,14 117,26 150,18" fill="none" stroke="#888" stroke-width="1.5"/>
+                                <circle cx="5"   cy="35" r="2" fill="#777"/>
+                                <circle cx="33"  cy="24" r="2" fill="#777"/>
+                                <circle cx="61"  cy="30" r="2" fill="#777"/>
+                                <circle cx="89"  cy="14" r="2" fill="#777"/>
+                                <circle cx="117" cy="26" r="2" fill="#777"/>
+                                <circle cx="150" cy="18" r="2" fill="#777"/>
+                            </svg>
+                        </div>
+
+                        <!-- Notícias -->
+                        <div class="mobile-section-title">Últimas Notícias</div>
+                        <div class="wf-news-sm">
+                            <div class="wf-text-line full" style="height:6px;"></div>
+                            <div class="wf-text-line medium" style="height:5px; margin-top:4px;"></div>
+                        </div>
+                        <div class="wf-news-sm">
+                            <div class="wf-text-line full" style="height:6px;"></div>
+                            <div class="wf-text-line medium" style="height:5px; margin-top:4px;"></div>
+                        </div>
+                        <div class="wf-news-sm">
+                            <div class="wf-text-line full" style="height:6px;"></div>
+                            <div class="wf-text-line medium" style="height:5px; margin-top:4px;"></div>
+                        </div>
+
+                    </div><!-- /mobile-content -->
+
+                    <div class="mobile-footer">© 2026 Dashboard Clima &amp; Notícias</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Annotations -->
+        <div style="flex:1; padding-top:8px;">
+            <h3 style="font-size:13px;font-weight:800;color:#333;margin-bottom:14px;">Adaptações Responsivas</h3>
+
+            <div class="resp-note">
+                <div class="resp-note-title">Navbar</div>
+                <div class="resp-note-text">Menu hambúrguer substitui links horizontais. Campo de busca fica visível abaixo do header.</div>
+            </div>
+            <div class="resp-note">
+                <div class="resp-note-title">Grid 2×2 → Coluna única</div>
+                <div class="resp-note-text">Ordem de empilhamento: Clima Atual → Previsão → Gráfico → Notícias.</div>
+            </div>
+            <div class="resp-note">
+                <div class="resp-note-title">Previsão 5 Dias</div>
+                <div class="resp-note-text">Scroll horizontal via <code>overflow-x: auto</code> para não comprimir os cards dos dias.</div>
+            </div>
+            <div class="resp-note">
+                <div class="resp-note-title">Gráfico (Chart.js)</div>
+                <div class="resp-note-text">Height reduzido em mobile. Chart.js responsivo por padrão com <code>responsive: true</code>.</div>
+            </div>
+            <div class="resp-note">
+                <div class="resp-note-title">Cards de Notícias</div>
+                <div class="resp-note-text">Empilhados em coluna única. Thumbnail removido em telas &lt; 360 px para economizar espaço.</div>
+            </div>
+
+            <div class="breakpoint-box">
+                <strong>Breakpoints definidos:</strong><br>
+                <code>≤ 768px</code>   → Mobile (1 coluna)<br>
+                <code>769 – 1024px</code> → Tablet (2 col. parcial)<br>
+                <code>≥ 1025px</code>  → Desktop (grid completo)
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ═══════════════════ PÁGINA 4 — SETUP INICIAL ═══════════════════ -->
+<div class="page">
+    <div class="section-header">
+        <h2>Setup Inicial do Projeto</h2>
+        <p>Estrutura de pastas, APIs e repositório Git</p>
+    </div>
+
+    <h3 class="sub">Estrutura de Pastas</h3>
+    <div class="folder-tree">
+<span class="folder">atv_labweb/</span>
+├── index.html              <span class="comment"># Página principal do dashboard</span>
+├── <span class="folder">css/</span>
+│   ├── style.css           <span class="comment"># Estilos globais e variáveis CSS</span>
+│   └── responsive.css      <span class="comment"># Media queries (abordagem mobile-first)</span>
+├── <span class="folder">js/</span>
+│   ├── main.js             <span class="comment"># Estado global, event listeners, inicialização</span>
+│   ├── weather.js          <span class="comment"># Consumo da OpenWeatherMap API</span>
+│   └── news.js             <span class="comment"># Consumo da NewsAPI.org</span>
+├── <span class="folder">assets/</span>
+│   └── <span class="folder">icons/</span>              <span class="comment"># Ícones SVG de condições climáticas</span>
+├── .gitignore
+└── wireframe.html          <span class="comment"># Este documento (entrega da atividade)</span>
+    </div>
+
+    <div class="grid-2" style="margin-top:4px;">
+        <div>
+            <h3 class="sub">APIs e Bibliotecas</h3>
+            <table class="api-table">
+                <thead>
+                    <tr><th>Recurso</th><th>Finalidade</th><th>Custo</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>OpenWeatherMap</strong></td>
+                        <td>Clima atual + previsão 5 dias</td>
+                        <td>Gratuito (1.000 req/dia)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NewsAPI.org</strong></td>
+                        <td>Manchetes por país / tema</td>
+                        <td>Gratuito (100 req/dia)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Chart.js</strong></td>
+                        <td>Gráfico de temperatura</td>
+                        <td>CDN — sem limite</td>
+                    </tr>
+                    <tr>
+                        <td><strong>LocalStorage</strong></td>
+                        <td>Cidades favoritas (CRUD)</td>
+                        <td>Nativo do browser</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="sub">Critérios de Aceite Atendidos</h3>
+            <div class="criteria-list">
+                <div><strong>API Externa</strong> — OpenWeatherMap + NewsAPI</div>
+                <div><strong>CRUD / Persistência</strong> — LocalStorage (favoritos)</div>
+                <div><strong>Interface Responsiva</strong> — CSS Grid + Media Queries</div>
+                <div><strong>Manipulação de DOM</strong> — Busca, filtros, estado dinâmico</div>
+            </div>
+        </div>
+
+        <div>
+            <h3 class="sub">Repositório Git</h3>
+            <div class="code-block">
+<span class="c"># 1. Inicializar repositório local</span>
+<span class="k">git init</span>
+<span class="k">git add .</span>
+<span class="k">git commit -m "chore: setup inicial"</span>
+
+<span class="c"># 2. Conectar ao GitHub e subir</span>
+<span class="k">git remote add origin \</span>
+<span class="k">  https://github.com/&lt;usuario&gt;/atv_labweb.git</span>
+<span class="k">git branch -M main</span>
+<span class="k">git push -u origin main</span>
+            </div>
+
+            <div class="setup-note">
+                <strong>Antes do push:</strong> crie o repositório <strong>público</strong> em
+                github.com com o nome <code>atv_labweb</code> (sem inicializar com README).
+                O link do repositório deverá ser incluído na entrega ao professor.
+            </div>
+
+            <h3 class="sub">Conteúdo do .gitignore</h3>
+            <div class="code-block" style="font-size:10.5px; line-height:1.7;">
+<span class="c"># Variáveis de ambiente (chaves de API)</span>
+<span class="k">.env</span>
+<span class="k">*.env</span>
+
+<span class="c"># Dependências e cache</span>
+<span class="k">node_modules/</span>
+<span class="k">.DS_Store</span>
+<span class="k">Thumbs.db</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Clima &amp; Notícias</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <script src="js/weather.js" defer></script>
+    <script src="js/news.js" defer></script>
+    <script src="js/main.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">
+                <span class="nav-icon">☀️</span>
+                <span class="nav-title">Dashboard Clima &amp; Notícias</span>
+            </div>
+            <div class="nav-search">
+                <input type="text" id="city-input" placeholder="🔍 Buscar cidade..." autocomplete="off">
+                <button id="search-btn">Buscar</button>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <div class="dashboard-grid">
+
+            <section class="card" id="weather-current">
+                <h2 class="card-title">Clima Atual</h2>
+                <div class="weather-placeholder">
+                    <p>Digite uma cidade e clique em Buscar.</p>
+                </div>
+            </section>
+
+            <section class="card" id="weather-forecast">
+                <h2 class="card-title">Previsão 5 Dias</h2>
+                <div class="forecast-container"></div>
+            </section>
+
+            <section class="card" id="chart-card">
+                <h2 class="card-title">Temperatura da Semana</h2>
+                <div class="chart-wrapper">
+                    <canvas id="temp-chart"></canvas>
+                </div>
+            </section>
+
+            <section class="card" id="news-card">
+                <h2 class="card-title">Últimas Notícias</h2>
+                <div id="news-container"></div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 Dashboard Clima &amp; Notícias — FATEC Itatiba</p>
+    </footer>
+
+</body>
+</html>
