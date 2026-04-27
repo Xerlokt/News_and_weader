@@ -1,16 +1,16 @@
 const WEATHER_API_KEY = 'SUA_CHAVE_AQUI';
-const WEATHER_BASE    = 'https://api.openweathermap.org/data/2.5';
+const WEATHER_BASE = 'https://api.openweathermap.org/data/2.5';
 
 async function fetchWeather(city) {
     const url = `${WEATHER_BASE}/weather?q=${encodeURIComponent(city)}&appid=${WEATHER_API_KEY}&units=metric&lang=pt_br`;
-    const res  = await fetch(url);
+    const res = await fetch(url);
     if (!res.ok) throw new Error('Cidade não encontrada');
     return res.json();
 }
 
 async function fetchForecast(city) {
     const url = `${WEATHER_BASE}/forecast?q=${encodeURIComponent(city)}&appid=${WEATHER_API_KEY}&units=metric&lang=pt_br&cnt=40`;
-    const res  = await fetch(url);
+    const res = await fetch(url);
     if (!res.ok) throw new Error('Previsão não disponível');
     return res.json();
 }
@@ -43,7 +43,7 @@ function renderForecast(data) {
 
     data.list.forEach(item => {
         const date = new Date(item.dt * 1000);
-        const key  = date.toDateString();
+        const key = date.toDateString();
         if (!dailyMap[key]) dailyMap[key] = { date, temps: [], icons: [] };
         dailyMap[key].temps.push(item.main.temp);
         dailyMap[key].icons.push(item.weather[0].icon);
@@ -52,7 +52,7 @@ function renderForecast(data) {
     const days = Object.values(dailyMap).slice(0, 5);
 
     const html = days.map(d => {
-        const avg  = Math.round(d.temps.reduce((a, b) => a + b, 0) / d.temps.length);
+        const avg = Math.round(d.temps.reduce((a, b) => a + b, 0) / d.temps.length);
         const icon = `https://openweathermap.org/img/wn/${d.icons[Math.floor(d.icons.length / 2)]}@2x.png`;
         return `
             <div class="forecast-day">
@@ -67,6 +67,6 @@ function renderForecast(data) {
 
     return days.map(d => ({
         label: DAYS[d.date.getDay()],
-        temp:  Math.round(d.temps.reduce((a, b) => a + b, 0) / d.temps.length)
+        temp: Math.round(d.temps.reduce((a, b) => a + b, 0) / d.temps.length)
     }));
 }

@@ -26,7 +26,7 @@ Dashboard interativo que exibe clima em tempo real, previsão de 5 dias e as úl
 | Lógica | JavaScript ES6+ (Fetch API, DOM, LocalStorage) |
 | Gráficos | [Chart.js](https://www.chartjs.org/) via CDN |
 | Clima | [OpenWeatherMap API](https://openweathermap.org/api) |
-| Notícias | [NewsAPI.org](https://newsapi.org/) |
+| Notícias | [GNews API](https://gnews.io/) |
 
 ---
 
@@ -34,7 +34,7 @@ Dashboard interativo que exibe clima em tempo real, previsão de 5 dias e as úl
 
 - Navegador moderno (Chrome, Edge ou Firefox)
 - Chave de API do **OpenWeatherMap** (gratuita)
-- Chave de API do **NewsAPI** (gratuita)
+- Chave de API do **GNews** (gratuita)
 
 Não é necessário instalar nada — o projeto roda diretamente no browser.
 
@@ -50,15 +50,15 @@ Não é necessário instalar nada — o projeto roda diretamente no browser.
 
 Plano gratuito: **1.000 requisições/dia**
 
-### NewsAPI
+### GNews API
 
-1. Acesse [newsapi.org](https://newsapi.org/) e clique em **Get API Key**
+1. Acesse [gnews.io](https://gnews.io/) e clique em **Get API Key**
 2. Preencha o cadastro e confirme o e-mail
 3. Copie a chave exibida no painel
 
-Plano gratuito (developer): **100 requisições/dia**
+Plano gratuito: **100 requisições/dia**, notícias com até 12h de atraso
 
-> **Atenção:** a NewsAPI gratuita bloqueia requisições feitas diretamente do browser em produção (CORS). Durante o desenvolvimento, abra o `index.html` localmente — funciona normalmente.
+> **Dica:** para evitar qualquer problema de CORS ao abrir via `file://`, use a extensão **Live Server** do VS Code (`http://127.0.0.1:5500`).
 
 ---
 
@@ -75,7 +75,7 @@ Abra o arquivo `js/news.js` e faça o mesmo:
 
 ```js
 // js/news.js
-const NEWS_API_KEY = 'SUA_CHAVE_AQUI'; // <-- cole sua chave aqui
+const NEWS_API_KEY = 'SUA_CHAVE_AQUI'; // <-- cole sua chave do gnews.io aqui
 ```
 
 Salve os dois arquivos.

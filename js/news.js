@@ -1,9 +1,9 @@
 const NEWS_API_KEY = 'SUA_CHAVE_AQUI';
-const NEWS_BASE    = 'https://newsapi.org/v2';
+const NEWS_BASE = 'https://gnews.io/api/v4';
 
-async function fetchNews(country = 'br', category = 'general') {
-    const url = `${NEWS_BASE}/top-headlines?country=${country}&category=${category}&pageSize=6&apiKey=${NEWS_API_KEY}`;
-    const res  = await fetch(url);
+async function fetchNews(country = 'br') {
+    const url = `${NEWS_BASE}/top-headlines?country=${country}&lang=pt&max=6&apikey=${NEWS_API_KEY}`;
+    const res = await fetch(url);
     if (!res.ok) throw new Error('Notícias indisponíveis');
     const data = await res.json();
     return data.articles;
@@ -21,7 +21,7 @@ function renderNews(articles) {
         <div class="news-card">
             <img
                 class="news-thumb"
-                src="${a.urlToImage || ''}"
+                src="${a.image || ''}"
                 alt=""
                 onerror="this.style.display='none'"
             >
