@@ -1,7 +1,7 @@
-const NEWS_API_KEY = 'SUA_CHAVE_AQUI';
-const NEWS_BASE = 'https://gnews.io/api/v4';
+const NEWS_API_KEY = import.meta.env.VITE_NEWS_API_KEY;
+const NEWS_BASE = import.meta.env.VITE_NEWS_BASE;
 
-async function fetchNews(country = 'br') {
+export async function fetchNews(country = 'br') {
     const url = `${NEWS_BASE}/top-headlines?country=${country}&lang=pt&max=6&apikey=${NEWS_API_KEY}`;
     const res = await fetch(url);
     if (!res.ok) throw new Error('Notícias indisponíveis');
@@ -9,7 +9,7 @@ async function fetchNews(country = 'br') {
     return data.articles;
 }
 
-function renderNews(articles) {
+export function renderNews(articles) {
     const container = document.getElementById('news-container');
 
     if (!articles.length) {

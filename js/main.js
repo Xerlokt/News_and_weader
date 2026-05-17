@@ -1,3 +1,7 @@
+import Chart from 'chart.js/auto';
+import { fetchWeather, fetchForecast, renderCurrentWeather, renderForecast } from './weather.js';
+import { fetchNews, renderNews } from './news.js';
+
 let tempChart = null;
 
 function renderTempChart(days) {

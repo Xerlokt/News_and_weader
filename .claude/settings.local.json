@@ -1,7 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "WebSearch"
+      "WebSearch",
+      "Bash(npm install *)",
+      "Bash(npx tailwindcss *)",
+      "Bash(.\\\\node_modules\\\\.bin\\\\tailwindcss init *)",
+      "Bash(node node_modules/tailwindcss/lib/cli.js init -p)",
+      "Bash(node -e \"const tw = require\\('./node_modules/tailwindcss/package.json'\\); console.log\\(tw.version, tw.bin\\)\")",
+      "Bash(npm run *)",
+      "Bash(npm uninstall *)"
     ]
   }
 }

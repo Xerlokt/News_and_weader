@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentação — Dashboard Clima & Notícias</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f0f0f0;
+            color: #222;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            margin: 20px auto;
+            padding: 18mm 20mm 18mm 20mm;
+            box-shadow: 0 2px 12px rgba(0,0,0,.15);
+            position: relative;
+        }
+
+        @media print {
+            body { background: white; }
+            .page {
+                margin: 0;
+                box-shadow: none;
+                page-break-after: always;
+            }
+            .page:last-child { page-break-after: avoid; }
+        }
+
+        /* ── HEADER DE SEÇÃO ── */
+        .section-header {
+            border-left: 5px solid #2563eb;
+            padding-left: 14px;
+            margin-bottom: 22px;
+        }
+        .section-header h2 { font-size: 18px; font-weight: 800; color: #1e3a8a; }
+        .section-header p  { font-size: 11px; color: #64748b; margin-top: 3px; }
+
+        h3 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin: 20px 0 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        p { margin-bottom: 10px; color: #374151; font-size: 12.5px; }
+
+        /* ── CAPA ── */
+        .cover {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 260mm;
+            text-align: center;
+        }
+        .cover-badge {
+            background: #eff6ff;
+            border: 1.5px solid #93c5fd;
+            padding: 5px 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #2563eb;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+        }
+        .cover h1 {
+            font-size: 32px;
+            font-weight: 900;
+            color: #111827;
+            line-height: 1.15;
+            margin-bottom: 10px;
+        }
+        .cover h2 {
+            font-size: 16px;
+            font-weight: 400;
+            color: #6b7280;
+            margin-bottom: 36px;
+        }
+        .cover-divider {
+            width: 60px;
+            height: 4px;
+            background: #2563eb;
+            border-radius: 2px;
+            margin: 0 auto 36px;
+        }
+        .cover-meta {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px 32px;
+            text-align: left;
+            width: 100%;
+            max-width: 400px;
+        }
+        .cover-meta-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 7px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 12px;
+        }
+        .cover-meta-row:last-child { border-bottom: none; }
+        .meta-key { color: #94a3b8; font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: .5px; }
+        .meta-val { color: #1e293b; font-weight: 600; }
+        .cover-techs {
+            margin-top: 36px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .tech-tag {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 4px 14px;
+            font-size: 11px;
+            border-radius: 16px;
+            color: #475569;
+            font-weight: 600;
+        }
+        .repo-link {
+            margin-top: 28px;
+            font-size: 12px;
+            color: #64748b;
+        }
+        .repo-link a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* ── CARDS DE DESTAQUE ── */
+        .info-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-left: 4px solid #2563eb;
+            border-radius: 0 6px 6px 0;
+            padding: 11px 14px;
+            margin: 12px 0;
+            font-size: 12px;
+            color: #1e40af;
+        }
+        .warning-box {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 6px 6px 0;
+            padding: 11px 14px;
+            margin: 12px 0;
+            font-size: 12px;
+            color: #92400e;
+        }
+        .success-box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-left: 4px solid #16a34a;
+            border-radius: 0 6px 6px 0;
+            padding: 11px 14px;
+            margin: 12px 0;
+            font-size: 12px;
+            color: #166534;
+        }
+
+        /* ── CÓDIGO ── */
+        .code-block {
+            font-family: 'Courier New', Consolas, monospace;
+            font-size: 11.5px;
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 6px;
+            padding: 14px 16px;
+            line-height: 1.9;
+            margin: 10px 0;
+        }
+        .code-block .cm  { color: #64748b; }
+        .code-block .kw  { color: #93c5fd; }
+        .code-block .str { color: #86efac; }
+        .code-block .hl  { color: #fde68a; }
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            padding: 1px 5px;
+            border-radius: 3px;
+            color: #1e40af;
+        }
+
+        /* ── TABELAS ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin: 12px 0;
+        }
+        th {
+            background: #1e3a8a;
+            color: white;
+            padding: 9px 12px;
+            font-weight: 700;
+            text-align: left;
+        }
+        td {
+            border: 1px solid #e2e8f0;
+            padding: 8px 12px;
+            color: #374151;
+        }
+        tr:nth-child(even) td { background: #f8fafc; }
+
+        /* ── STEPS ── */
+        .steps { margin: 12px 0; }
+        .step {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 12px;
+            align-items: flex-start;
+        }
+        .step-num {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #2563eb;
+            color: white;
+            font-size: 12px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .step-body { flex: 1; }
+        .step-title { font-weight: 700; color: #111827; font-size: 12.5px; margin-bottom: 2px; }
+        .step-text  { color: #6b7280; font-size: 12px; margin: 0; }
+
+        /* ── FOLDER TREE ── */
+        .folder-tree {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 2;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 14px 18px;
+            color: #374151;
+        }
+        .folder-tree .folder { color: #1e40af; font-weight: 700; }
+        .folder-tree .comment { color: #94a3b8; font-size: 11px; }
+
+        /* ── WIREFRAME SECTION ── */
+        .wf-desc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 14px 0;
+        }
+        .wf-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 14px;
+        }
+        .wf-card-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #1e3a8a;
+            margin-bottom: 6px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .wf-card p { font-size: 11.5px; color: #475569; margin: 0; }
+
+        /* ── LAYOUT DIAGRAM ── */
+        .layout-diagram {
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 14px 0;
+            font-size: 11px;
+        }
+        .layout-nav {
+            background: #1e3a8a;
+            color: white;
+            padding: 8px 12px;
+            font-weight: 700;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        .layout-cell {
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            min-height: 70px;
+        }
+        .layout-cell-title {
+            font-size: 10px;
+            font-weight: 800;
+            color: #2563eb;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-bottom: 4px;
+        }
+        .layout-cell p { font-size: 11px; color: #6b7280; margin: 0; }
+        .layout-footer {
+            background: #f1f5f9;
+            border-top: 1px solid #e2e8f0;
+            padding: 7px 12px;
+            text-align: center;
+            font-size: 10px;
+            color: #94a3b8;
+            font-weight: 700;
+        }
+
+        /* ── CRITÉRIOS ── */
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 12px 0;
+        }
+        .criteria-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 6px;
+            padding: 10px 12px;
+        }
+        .criteria-check {
+            color: #16a34a;
+            font-size: 16px;
+            font-weight: 900;
+            flex-shrink: 0;
+            line-height: 1.3;
+        }
+        .criteria-text { font-size: 11.5px; color: #166534; }
+        .criteria-text strong { display: block; font-size: 12px; color: #14532d; margin-bottom: 1px; }
+
+        /* ── SEPARADOR ── */
+        .divider { border: none; border-top: 1px solid #e2e8f0; margin: 22px 0; }
+
+        /* ── RODAPÉ DA PÁGINA ── */
+        .page-footer {
+            position: absolute;
+            bottom: 12mm;
+            left: 20mm;
+            right: 20mm;
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #94a3b8;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════════ PÁGINA 1 — CAPA ═══════════════════════ -->
+<div class="page">
+    <div class="cover">
+        <div class="cover-badge">Laboratório de Desenvolvimento Web · FATEC Itatiba</div>
+        <h1>Dashboard<br>Clima &amp; Notícias</h1>
+        <h2>Documentação Técnica do Projeto</h2>
+        <div class="cover-divider"></div>
+
+        <div class="cover-meta">
+            <div class="cover-meta-row">
+                <span class="meta-key">Autor</span>
+                <span class="meta-val">Gian Carlo Rebello Coelho</span>
+            </div>
+            <div class="cover-meta-row">
+                <span class="meta-key">Disciplina</span>
+                <span class="meta-val">Lab. de Desenvolvimento Web</span>
+            </div>
+            <div class="cover-meta-row">
+                <span class="meta-key">Professor</span>
+                <span class="meta-val">Leandro Felipe Carvalho</span>
+            </div>
+            <div class="cover-meta-row">
+                <span class="meta-key">Instituição</span>
+                <span class="meta-val">FATEC Itatiba</span>
+            </div>
+            <div class="cover-meta-row">
+                <span class="meta-key">Data</span>
+                <span class="meta-val">Abril / 2026</span>
+            </div>
+        </div>
+
+        <div class="cover-techs">
+            <span class="tech-tag">HTML5</span>
+            <span class="tech-tag">CSS3</span>
+            <span class="tech-tag">JavaScript ES6+</span>
+            <span class="tech-tag">OpenWeatherMap API</span>
+            <span class="tech-tag">GNews API</span>
+            <span class="tech-tag">Chart.js</span>
+            <span class="tech-tag">LocalStorage</span>
+        </div>
+
+        <div class="repo-link">
+            Repositório público:
+            <a href="https://github.com/Xerlokt/News_and_weader">github.com/Xerlokt/News_and_weader</a>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════ PÁGINA 2 — COMO FUNCIONA ═══════════════════════ -->
+<div class="page">
+    <div class="section-header">
+        <h2>Como o Projeto Funciona</h2>
+        <p>Visão geral da arquitetura, arquivos e fluxo de dados</p>
+    </div>
+
+    <p>
+        O <strong>Dashboard Clima &amp; Notícias</strong> é uma aplicação web de página única (SPA) construída
+        com HTML5, CSS3 e JavaScript puro — sem frameworks ou etapas de build. Ao abrir o
+        <code>index.html</code> no navegador, a aplicação carrega os dados de clima e notícias em tempo real
+        via Fetch API e os exibe de forma dinâmica no DOM.
+    </p>
+
+    <h3>Estrutura de Arquivos</h3>
+    <div class="folder-tree">
+<span class="folder">News_and_weader/</span>
+├── index.html          <span class="comment"># Página principal — estrutura HTML do dashboard</span>
+├── <span class="folder">css/</span>
+│   ├── style.css       <span class="comment"># Estilos globais, variáveis CSS e layout Grid</span>
+│   └── responsive.css  <span class="comment"># Media queries (mobile-first)</span>
+├── <span class="folder">js/</span>
+│   ├── weather.js      <span class="comment"># Integração com OpenWeatherMap API</span>
+│   ├── news.js         <span class="comment"># Integração com GNews API</span>
+│   └── main.js         <span class="comment"># Inicialização, eventos e gráfico Chart.js</span>
+├── <span class="folder">assets/icons/</span>      <span class="comment"># Pasta para ícones SVG</span>
+├── wireframe.html      <span class="comment"># Wireframe acadêmico do projeto</span>
+└── README.md           <span class="comment"># Documentação resumida</span>
+    </div>
+
+    <h3>Papel de Cada Arquivo JavaScript</h3>
+
+    <table>
+        <thead>
+            <tr><th>Arquivo</th><th>Responsabilidade</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>weather.js</code></td>
+                <td>Contém as funções <code>fetchWeather()</code> e <code>fetchForecast()</code> que chamam a OpenWeatherMap API, além de <code>renderCurrentWeather()</code> e <code>renderForecast()</code> que montam os cards no DOM.</td>
+            </tr>
+            <tr>
+                <td><code>news.js</code></td>
+                <td>Contém <code>fetchNews()</code>, que busca as últimas notícias do Brasil na GNews API, e <code>renderNews()</code>, que gera os cards de notícia com imagem, título, descrição e link.</td>
+            </tr>
+            <tr>
+                <td><code>main.js</code></td>
+                <td>Centraliza a inicialização: chama <code>fetchNews()</code> ao carregar a página, registra os event listeners da barra de busca e renderiza o gráfico de temperatura via Chart.js.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Fluxo de Dados</h3>
+
+    <div class="layout-diagram">
+        <div class="layout-nav">
+            ☀️&nbsp; Dashboard Clima &amp; Notícias — Barra de navegação com busca por cidade
+        </div>
+        <div class="layout-grid">
+            <div class="layout-cell">
+                <div class="layout-cell-title">Clima Atual</div>
+                <p>Temperatura, condição, humidade,<br>vento e sensação térmica.<br>Fonte: OpenWeatherMap</p>
+            </div>
+            <div class="layout-cell">
+                <div class="layout-cell-title">Previsão 5 Dias</div>
+                <p>Cards diários com ícone<br>e temperatura média.<br>Fonte: OpenWeatherMap</p>
+            </div>
+            <div class="layout-cell">
+                <div class="layout-cell-title">Gráfico de Temperatura</div>
+                <p>Linha com temperatura média<br>dos 5 dias. Gerado com Chart.js<br>a partir dos dados do forecast.</p>
+            </div>
+            <div class="layout-cell">
+                <div class="layout-cell-title">Últimas Notícias</div>
+                <p>6 cards com manchetes<br>brasileiras em português.<br>Fonte: GNews API</p>
+            </div>
+        </div>
+        <div class="layout-footer">RODAPÉ — © 2026 Dashboard Clima &amp; Notícias — FATEC Itatiba</div>
+    </div>
+
+    <div class="info-box">
+        <strong>Persistência local:</strong> a cidade pesquisada é salva no <code>localStorage</code> do navegador. Nas próximas visitas, o clima da última cidade é carregado automaticamente.
+    </div>
+
+    <div class="page-footer">
+        <span>Dashboard Clima &amp; Notícias — Gian Carlo Rebello Coelho</span>
+        <span>FATEC Itatiba · 2026</span>
+    </div>
+</div>
+
+<!-- ═══════════════════════ PÁGINA 3 — CHAVES DE API ═══════════════════════ -->
+<div class="page">
+    <div class="section-header">
+        <h2>Chaves de API</h2>
+        <p>Como criar as contas, obter as chaves e configurá-las no projeto</p>
+    </div>
+
+    <p>
+        O projeto depende de duas APIs externas gratuitas. Cada uma exige uma chave de autenticação
+        que deve ser inserida nos arquivos JavaScript antes de usar o dashboard.
+    </p>
+
+    <table>
+        <thead>
+            <tr><th>API</th><th>Finalidade</th><th>Limite gratuito</th><th>Site</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>OpenWeatherMap</strong></td>
+                <td>Clima atual e previsão 5 dias</td>
+                <td>1.000 requisições/dia</td>
+                <td>openweathermap.org</td>
+            </tr>
+            <tr>
+                <td><strong>GNews API</strong></td>
+                <td>Notícias brasileiras em português</td>
+                <td>100 requisições/dia</td>
+                <td>gnews.io</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr class="divider">
+
+    <h3>1. OpenWeatherMap — Obter a chave</h3>
+
+    <div class="steps">
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+                <div class="step-title">Criar a conta</div>
+                <p class="step-text">Acesse <strong>openweathermap.org</strong> e clique em <em>Sign Up</em>. Preencha nome, e-mail e senha, depois confirme o e-mail recebido.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+                <div class="step-title">Acessar o painel de API Keys</div>
+                <p class="step-text">Após o login, clique no seu nome no canto superior direito → <em>My API keys</em>. Uma chave padrão já estará criada.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+                <div class="step-title">Copiar a chave</div>
+                <p class="step-text">Copie a chave exibida (sequência de 32 caracteres). Ela pode levar até 10 minutos para ativar após o cadastro.</p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <h3>2. GNews API — Obter a chave</h3>
+
+    <div class="steps">
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+                <div class="step-title">Criar a conta</div>
+                <p class="step-text">Acesse <strong>gnews.io</strong> e clique em <em>Get API Key</em>. Preencha o e-mail e senha, depois confirme pelo link enviado ao e-mail.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+                <div class="step-title">Acessar o painel</div>
+                <p class="step-text">Após o login, a chave aparece diretamente na página inicial do painel (dashboard). Não é necessário navegar em outros menus.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+                <div class="step-title">Copiar a chave</div>
+                <p class="step-text">Copie a chave exibida. A GNews disponibiliza a chave imediatamente após o cadastro — não há período de ativação.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-footer">
+        <span>Dashboard Clima &amp; Notícias — Gian Carlo Rebello Coelho</span>
+        <span>FATEC Itatiba · 2026</span>
+    </div>
+</div>
+
+<!-- ═══════════════════════ PÁGINA 4 — CONFIGURAÇÃO ═══════════════════════ -->
+<div class="page">
+    <div class="section-header">
+        <h2>Configurando as Chaves no Projeto</h2>
+        <p>Onde e como inserir as chaves nos arquivos JavaScript</p>
+    </div>
+
+    <p>
+        As chaves de API são inseridas diretamente na primeira linha de cada arquivo JavaScript.
+        Abra os arquivos no editor de texto de sua preferência e substitua o placeholder
+        <code>'SUA_CHAVE_AQUI'</code> pela chave real obtida no passo anterior.
+    </p>
+
+    <h3>Arquivo <code>js/weather.js</code> — Chave do OpenWeatherMap</h3>
+    <p>Abra o arquivo <code>js/weather.js</code> e localize a linha 1:</p>
+    <div class="code-block">
+<span class="cm">// ANTES (placeholder)</span>
+<span class="kw">const</span> WEATHER_API_KEY = <span class="str">'SUA_CHAVE_AQUI'</span>;
+
+<span class="cm">// DEPOIS (com a chave real)</span>
+<span class="kw">const</span> WEATHER_API_KEY = <span class="hl">'a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4'</span>; <span class="cm">// exemplo</span>
+    </div>
+
+    <h3>Arquivo <code>js/news.js</code> — Chave da GNews API</h3>
+    <p>Abra o arquivo <code>js/news.js</code> e localize a linha 1:</p>
+    <div class="code-block">
+<span class="cm">// ANTES (placeholder)</span>
+<span class="kw">const</span> NEWS_API_KEY = <span class="str">'SUA_CHAVE_AQUI'</span>;
+
+<span class="cm">// DEPOIS (com a chave real)</span>
+<span class="kw">const</span> NEWS_API_KEY = <span class="hl">'9f8e7d6c5b4a9f8e7d6c5b4a9f8e7d6c'</span>; <span class="cm">// exemplo</span>
+    </div>
+
+    <div class="warning-box">
+        <strong>Importante:</strong> não compartilhe as chaves reais publicamente (ex: no GitHub). As chaves acima são apenas exemplos ilustrativos.
+    </div>
+
+    <hr class="divider">
+
+    <h3>Como executar o projeto</h3>
+
+    <p>Após configurar as chaves, há duas formas de abrir o dashboard:</p>
+
+    <div class="steps">
+        <div class="step">
+            <div class="step-num">A</div>
+            <div class="step-body">
+                <div class="step-title">Via Live Server no VS Code (recomendado)</div>
+                <p class="step-text">Instale a extensão <strong>Live Server</strong> (autor: Ritwick Dey) no VS Code. Clique com o botão direito em <code>index.html</code> → <em>Open with Live Server</em>. O browser abre em <code>http://127.0.0.1:5500</code> e as APIs funcionam corretamente.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">B</div>
+            <div class="step-body">
+                <div class="step-title">Duplo clique no index.html</div>
+                <p class="step-text">Abre diretamente no browser via protocolo <code>file://</code>. O clima funciona normalmente. Para as notícias funcionarem por este método, pode ser necessário usar o Live Server dependendo do navegador.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <strong>Tudo certo quando:</strong> ao digitar uma cidade e clicar em Buscar, os cards de clima, previsão e gráfico são preenchidos. O feed de notícias aparece automaticamente ao carregar a página.
+    </div>
+
+    <hr class="divider">
+
+    <h3>Critérios da Disciplina Atendidos</h3>
+    <div class="criteria-grid">
+        <div class="criteria-item">
+            <div class="criteria-check">✔</div>
+            <div class="criteria-text">
+                <strong>Consumo de API Externa</strong>
+                OpenWeatherMap (clima) e GNews API (notícias)
+            </div>
+        </div>
+        <div class="criteria-item">
+            <div class="criteria-check">✔</div>
+            <div class="criteria-text">
+                <strong>Persistência / CRUD</strong>
+                LocalStorage salva e recupera cidades pesquisadas
+            </div>
+        </div>
+        <div class="criteria-item">
+            <div class="criteria-check">✔</div>
+            <div class="criteria-text">
+                <strong>Interface Responsiva</strong>
+                CSS Grid + Media Queries (mobile, tablet, desktop)
+            </div>
+        </div>
+        <div class="criteria-item">
+            <div class="criteria-check">✔</div>
+            <div class="criteria-text">
+                <strong>Manipulação de DOM</strong>
+                Busca dinâmica, renderização de cards e gráfico
+            </div>
+        </div>
+    </div>
+
+    <div class="page-footer">
+        <span>Dashboard Clima &amp; Notícias — Gian Carlo Rebello Coelho</span>
+        <span>FATEC Itatiba · 2026</span>
+    </div>
+</div>
+
+<!-- ═══════════════════════ PÁGINA 5 — WIREFRAME ═══════════════════════ -->
+<div class="page">
+    <div class="section-header">
+        <h2>O Wireframe do Projeto</h2>
+        <p>Explicação do arquivo wireframe.html — planejamento visual da interface</p>
+    </div>
+
+    <p>
+        O arquivo <code>wireframe.html</code> é um documento HTML independente que representa o
+        <strong>planejamento visual</strong> do dashboard — uma etapa de projeto que define a estrutura
+        e o layout das telas <em>antes</em> da implementação real. Ele foi entregue como parte da
+        atividade acadêmica da disciplina.
+    </p>
+
+    <h3>O que é um Wireframe</h3>
+    <p>
+        Um wireframe é um esboço de baixa fidelidade que mostra onde cada elemento estará na tela,
+        sem cores, fontes ou imagens definitivas. Blocos cinzas representam áreas de conteúdo,
+        retângulos com um "X" representam imagens, e linhas horizontais representam blocos de texto.
+        O objetivo é validar a organização da informação antes de escrever o código real.
+    </p>
+
+    <h3>Conteúdo do wireframe.html</h3>
+
+    <div class="wf-desc-grid">
+        <div class="wf-card">
+            <div class="wf-card-title">Página 1 — Capa</div>
+            <p>Capa do documento com título, nome do aluno, professor, disciplina, instituição e lista de tecnologias utilizadas no projeto.</p>
+        </div>
+        <div class="wf-card">
+            <div class="wf-card-title">Página 2 — Wireframe Desktop</div>
+            <p>Layout em grid 2×2 para resolução 1280×800 px. Mostra a navbar com busca, os 4 quadrantes (clima, previsão, gráfico, notícias) e o rodapé, todos em tons de cinza.</p>
+        </div>
+        <div class="wf-card">
+            <div class="wf-card-title">Página 3 — Wireframe Mobile</div>
+            <p>Mockup de smartphone (375×812 px) com layout em coluna única. Inclui hambúrguer no header, empilhamento de seções e scroll horizontal na previsão de 5 dias.</p>
+        </div>
+        <div class="wf-card">
+            <div class="wf-card-title">Página 4 — Setup Inicial</div>
+            <p>Documentação técnica original: estrutura de pastas, tabela de APIs, critérios de aceite e comandos Git para publicar o repositório no GitHub.</p>
+        </div>
+    </div>
+
+    <h3>Breakpoints definidos no wireframe</h3>
+    <table>
+        <thead>
+            <tr><th>Breakpoint</th><th>Dispositivo</th><th>Comportamento do layout</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>≤ 768px</code></td>
+                <td>Mobile</td>
+                <td>1 coluna — seções empilhadas verticalmente, hambúrguer ativo</td>
+            </tr>
+            <tr>
+                <td><code>769px – 1024px</code></td>
+                <td>Tablet</td>
+                <td>Grid parcial de 2 colunas com ajustes de espaçamento</td>
+            </tr>
+            <tr>
+                <td><code>≥ 1025px</code></td>
+                <td>Desktop</td>
+                <td>Grid completo 2×2, navbar com busca inline, todos os cards visíveis</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Diferenças entre o wireframe e a implementação final</h3>
+    <p>
+        O wireframe serve como referência de planejamento. A implementação real em <code>index.html</code>
+        seguiu a mesma estrutura de grid 2×2 e as mesmas seções definidas no wireframe, com as
+        adaptações naturais que surgem no desenvolvimento: ícones reais da OpenWeatherMap, dados
+        dinâmicos via Fetch API, gráfico interativo via Chart.js e notícias reais via GNews API.
+    </p>
+
+    <hr class="divider">
+
+    <h3>Repositório Público</h3>
+    <p>O código-fonte completo do projeto está disponível no GitHub:</p>
+    <div class="code-block">
+<span class="str">https://github.com/Xerlokt/News_and_weader</span>
+    </div>
+
+    <div class="info-box">
+        <strong>Para visualizar o wireframe:</strong> abra o arquivo <code>wireframe.html</code> diretamente no navegador (duplo clique). Ele pode ser impresso como PDF usando <em>Ctrl+P → Salvar como PDF</em> no browser.
+    </div>
+
+    <div class="page-footer">
+        <span>Dashboard Clima &amp; Notícias — Gian Carlo Rebello Coelho</span>
+        <span>FATEC Itatiba · 2026</span>
+    </div>
+</div>
+
+</body>
+</html>

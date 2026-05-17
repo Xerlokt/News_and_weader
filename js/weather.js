@@ -1,21 +1,21 @@
-const WEATHER_API_KEY = 'SUA_CHAVE_AQUI';
-const WEATHER_BASE = 'https://api.openweathermap.org/data/2.5';
+const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
+const WEATHER_BASE = import.meta.env.VITE_WEATHER_BASE;
 
-async function fetchWeather(city) {
+export async function fetchWeather(city) {
     const url = `${WEATHER_BASE}/weather?q=${encodeURIComponent(city)}&appid=${WEATHER_API_KEY}&units=metric&lang=pt_br`;
     const res = await fetch(url);
     if (!res.ok) throw new Error('Cidade não encontrada');
     return res.json();
 }
 
-async function fetchForecast(city) {
+export async function fetchForecast(city) {
     const url = `${WEATHER_BASE}/forecast?q=${encodeURIComponent(city)}&appid=${WEATHER_API_KEY}&units=metric&lang=pt_br&cnt=40`;
     const res = await fetch(url);
     if (!res.ok) throw new Error('Previsão não disponível');
     return res.json();
 }
 
-function renderCurrentWeather(data) {
+export function renderCurrentWeather(data) {
     const card = document.getElementById('weather-current');
     const icon = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
 
@@ -37,7 +37,7 @@ function renderCurrentWeather(data) {
     `;
 }
 
-function renderForecast(data) {
+export function renderForecast(data) {
     const DAYS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
     const dailyMap = {};
 
